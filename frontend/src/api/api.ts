@@ -1,10 +1,6 @@
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:6680";
-
 class ApiClient {
-  private baseUrl: string = `${API_URL}/api`;
-
   private async request<T>(resource: string, options: RequestInit): Promise<T> {
-    const url = `${this.baseUrl}/${resource}`;
+    const url = `api/${resource}`;
     try {
       const response = await fetch(url, options);
 
