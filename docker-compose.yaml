@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  # Frontend React application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "6680:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Backend Express API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "6600:6600" # Assuming your Node app listens on 6600 inside the container
+    environment:
+      - NODE_ENV=production
+      # Corrected Port: Use the internal MongoDB port 27017
+      - MONGODB_URI=mongodb://mongodb:27017/invitesApp
+      - CORS_ORIGIN=http://localhost:6680
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017" # Host port 6617 maps to container port 27017
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongodb-data:

@@ -1,0 +1,4 @@
+☐ UI that a user can sign in
+☐ User is added to the database
+☐ API can accept a user and return invites they belong to
+☐ User can create an invite and user can see it

@@ -1,0 +1,41 @@
+# ---- Stage 1: Build ----
+FROM node:22-alpine AS build
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json (or yarn.lock)
+COPY package*.json ./
+
+# Install ALL dependencies (including devDependencies needed for build)
+# Use 'ci' for potentially faster and more reliable installs in CI/CD environments
+RUN npm ci
+
+# Copy the rest of the application source code
+COPY . .
+
+# Build the application (e.g., compile TypeScript)
+# Ensure you have a "build" script in your package.json
+RUN npm run build
+
+# ---- Stage 2: Production ----
+# Start from a fresh Node.js Alpine image
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy package.json and package-lock.json (or yarn.lock)
+COPY package*.json ./
+
+# Install ONLY production dependencies
+RUN npm ci --only=production
+
+# Copy the built application code from the 'build' stage
+# Adjust the source path if your build output is not './dist'
+COPY --from=build /app/dist ./dist
+
+# Expose the port the app runs on (ensure this matches your app config and docker-compose)
+EXPOSE 6600
+
+# Command to run the application using the compiled JavaScript file
+CMD ["node", "dist/app.js"]
