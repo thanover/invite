@@ -21,24 +21,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "6600:6600" # Assuming your Node app listens on 6600 inside the container
+    # Load environment variables from .env file
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
-      # Corrected Port: Use the internal MongoDB port 27017
-      - MONGODB_URI=mongodb://mongodb:27017/invitesApp
-      - CORS_ORIGIN=http://localhost:6680
-    depends_on:
-      - mongodb
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  # MongoDB Database
-  mongodb:
-    image: arm64v8/mongo:7
-    ports:
-      - "27017:27017" # Host port 6617 maps to container port 27017
-    volumes:
-      - mongodb-data:/data/db
+      # Use the Atlas connection string, substituting the password from the .env file
+      - MONGODB_URI=mongodb+srv://inviteApp_prod:${MONGO_ATLAS_PASSWORD}@cluster0.g0ffsht.mongodb.net/?retryWrites=true&w=majority&appName=cluster0
+      - CORS_ORIGIN=http://localhost:6680 # Adjust if needed
     networks:
       - app-network
     restart: unless-stopped
@@ -48,4 +38,4 @@ networks:
     driver: bridge
 
 volumes:
-  mongodb-data:
+  mongodb-data: # Optional: Remove if mongodb service is removed
