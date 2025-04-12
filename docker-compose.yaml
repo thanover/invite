@@ -34,7 +34,7 @@ services:
 
   # MongoDB Database
   mongodb:
-    image: mongo:7
+    image: arm64v8/mongo:7
     ports:
       - "27017:27017" # Host port 6617 maps to container port 27017
     volumes:
