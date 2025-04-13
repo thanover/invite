@@ -1,8 +1,25 @@
 class ApiClient {
+  // Always use the relative path '/api'.
+  // This relies on the proxy configuration (Vite dev server or production server like Nginx)
+  // to correctly forward requests starting with /api to the backend service.
+  private baseUrl: string = "/api"; // Base URL now starts with a slash
+
+  // Constructor is now simpler as baseUrl is fixed
+  constructor() {}
+
   private async request<T>(resource: string, options: RequestInit): Promise<T> {
-    const url = `api/${resource}`;
+    // Construct the full URL using the absolute base path
+    // Ensure resource doesn't accidentally start with a slash if baseUrl already has one
+    const cleanResource = resource.startsWith("/")
+      ? resource.substring(1)
+      : resource;
+    const url = `${this.baseUrl}/${cleanResource}`; // Use the baseUrl which starts with /
+
+    console.log("API Request URL:", url); // Log the corrected URL
+    console.log("API Request Options:", options);
     try {
       const response = await fetch(url, options);
+      console.log("API Response Status:", response.status); // Log status code
 
       if (!response.ok) {
         // Attempt to parse error details from the response body
@@ -10,7 +27,7 @@ class ApiClient {
         try {
           errorData = await response.json();
         } catch (error: unknown) {
-          console.error("Failed to parse error response:", error);
+          console.log("Error parsing JSON:", error);
           // Ignore if the body isn't valid JSON
         }
         console.error("API Error Response:", errorData);
@@ -36,6 +53,7 @@ class ApiClient {
 
   public get<T>(resource: string, id?: string | number): Promise<T> {
     const path = id ? `${resource}/${id}` : resource;
+    // console.log("API GET Path:", path); // Keep or remove logging as needed
     return this.request<T>(path, {
       method: "GET",
       headers: {
@@ -83,32 +101,3 @@ class ApiClient {
 // Export an instance for easy use throughout the application
 const apiClient = new ApiClient();
 export default apiClient;
-
-// Example Usage (in a component):
-/*
-import apiClient from './api/api';
-
-interface Event {
-    _id: string;
-    title: string;
-    // ... other fields
-}
-
-async function fetchEvents() {
-    try {
-        const events = await apiClient.get<Event[]>('events');
-        console.log(events);
-    } catch (error) {
-        console.error("Failed to fetch events:", error);
-    }
-}
-
-async function createEvent(newEventData: Omit<Event, '_id'>) {
-    try {
-        const createdEvent = await apiClient.post<Event, Omit<Event, '_id'>>('events', newEventData);
-        console.log('Created:', createdEvent);
-    } catch (error) {
-        console.error("Failed to create event:", error);
-    }
-}
-*/

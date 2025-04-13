@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../api/api"; // Import the apiClient instance
-
+import EventCard from "./EventCard";
 // Define an interface for the structure of an event object
 interface Event {
   _id: string; // Assuming MongoDB ObjectId as string
@@ -50,19 +50,17 @@ const EventList: React.FC = () => {
 
   return (
     <div>
-      <h2>Upcoming Events</h2>
       {events.length === 0 ? (
         <p>No events found.</p>
       ) : (
-        <ul>
+        <div>
+          {" "}
+          {/* Changed from ul to div */}
           {events.map((event) => (
-            <li key={event._id}>
-              <h3>{event.title}</h3>
-              <p>Date: {new Date(event.date).toLocaleDateString()}</p>
-              {event.description && <p>Description: {event.description}</p>}
-            </li>
+            // Render EventCard for each event instead of li
+            <EventCard key={event._id} event={event} />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
