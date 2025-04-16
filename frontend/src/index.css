@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+@theme {
+  --color-night: #24283b;
+  --color-blue: #7aa2f7;
+  --color-turquoise: #b4f9f8;
+  --color-rose: #e87af7;
+  --color-pink: #f472b6;
+}
+
+.martian-mono-normal {
+  font-family: "Martian Mono", monospace;
+  font-optical-sizing: auto;
+  color: #ffffff;
+  font-weight: 100;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}

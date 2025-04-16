@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout"; // Import the Layout component
-import LoginPage from "./pages/Login";
+import { LoginPage } from "./pages/Login";
 import EventListPage from "./pages/EventList";
 import EventDetailPage from "./pages/EventDetailsPage";
+import { Dashboard } from "./pages/Dashboard";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/* Child routes that will render inside the Layout's <Outlet /> */}
           {/* Use 'index' for the component that matches the parent path exactly */}
-          <Route index element={<LoginPage />} />
+          <Route index element={<Dashboard />} />
+          <Route path="login" element={<LoginPage />} />
           <Route path="event" element={<EventListPage />} />
           <Route path="event/:id" element={<EventDetailPage />} />
 
@@ -23,10 +25,9 @@ function App() {
           <Route
             path="*"
             element={
-              <div>
+              <div className="h-1/2 flex flex-col items-center justify-center">
                 <h2>404 Not Found</h2>
                 <p>The page you requested could not be found.</p>
-                <Link to="/">Go Home</Link>
               </div>
             }
           />

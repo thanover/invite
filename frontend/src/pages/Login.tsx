@@ -1,13 +1,19 @@
-import React from "react";
+import { useClerk } from "@clerk/clerk-react";
+import { Button } from "../components/Button";
 
-const LoginPage: React.FC = () => {
+export function LoginPage() {
+  const clerk = useClerk();
+
   return (
-    <div>
-      <h1>Login Page</h1>
-      {/* Add your login form and logic here */}
-      <p>Login form will go here.</p>
+    <div className="h-1/3 flex justify-center items-center">
+      <Button to="/home" type="Primary">
+        <button
+          className="text-xs text-[var(--color-night)]"
+          onClick={() => clerk.openSignIn({})}
+        >
+          Log in with Google
+        </button>
+      </Button>
     </div>
   );
-};
-
-export default LoginPage;
+}
