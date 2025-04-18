@@ -6,7 +6,8 @@ export function LoginPage() {
 
   return (
     <div className="h-1/3 flex justify-center items-center">
-      <Button to="/home" type="Primary">
+      Log In
+      <Button type="Primary">
         <button
           className="text-xs text-[var(--color-night)]"
           onClick={() => clerk.openSignIn({})}

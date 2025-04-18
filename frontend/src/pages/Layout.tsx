@@ -1,6 +1,6 @@
-import { useUser } from "@clerk/clerk-react";
 import { Outlet, Link } from "react-router-dom";
 import { User } from "../components/User";
+import { useUser } from "@clerk/clerk-react";
 
 const Title = () => {
   return (
@@ -32,7 +32,7 @@ export function Layout() {
 
         {/* Main content area where child routes will render */}
         <main className="w-full h-full">
-          <Outlet /> {/* Renders the matched child route component */}
+          <Outlet />
         </main>
       </div>
     </div>

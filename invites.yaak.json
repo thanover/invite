@@ -1,0 +1,234 @@
+{
+  "yaakVersion": "2025.1.2",
+  "yaakSchema": 3,
+  "timestamp": "2025-04-18T20:18:28.605678722",
+  "resources": {
+    "workspaces": [
+      {
+        "model": "workspace",
+        "id": "wk_uD8kTVtvkX",
+        "createdAt": "2025-04-18T00:50:41.862345487",
+        "updatedAt": "2025-04-18T00:50:41.862346098",
+        "name": "Yaak",
+        "description": "",
+        "settingValidateCertificates": true,
+        "settingFollowRedirects": true,
+        "settingRequestTimeout": 0
+      }
+    ],
+    "environments": [
+      {
+        "model": "environment",
+        "id": "ev_oYThsEYCx2",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "environmentId": null,
+        "createdAt": "2025-04-18T00:50:42.837388088",
+        "updatedAt": "2025-04-18T00:50:42.837388388",
+        "name": "Global Variables",
+        "variables": []
+      },
+      {
+        "model": "environment",
+        "id": "ev_c6oJ4ifN5g",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "environmentId": "ev_oYThsEYCx2",
+        "createdAt": "2025-04-18T01:20:05.889739564",
+        "updatedAt": "2025-04-18T19:07:45.484174850",
+        "name": "local",
+        "variables": [
+          {
+            "enabled": true,
+            "name": "url",
+            "value": "localhost:6600",
+            "id": "SS96DkfYzW"
+          },
+          {
+            "enabled": true,
+            "name": "token",
+            "value": "eyJhbGci",
+            "id": "W6xjGGK58k"
+          },
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": "WHAEj3hrV0"
+          }
+        ]
+      }
+    ],
+    "folders": [
+      {
+        "model": "folder",
+        "id": "fl_j2jxqj6V7P",
+        "createdAt": "2025-04-18T01:19:47.154827559",
+        "updatedAt": "2025-04-18T01:19:49.991462306",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "folderId": null,
+        "name": "local",
+        "description": "",
+        "sortPriority": 500.0
+      },
+      {
+        "model": "folder",
+        "id": "fl_gRPXdmY8yy",
+        "createdAt": "2025-04-18T00:51:19.956358060",
+        "updatedAt": "2025-04-18T01:19:51.235435946",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "folderId": null,
+        "name": "invites",
+        "description": "",
+        "sortPriority": 250.0
+      }
+    ],
+    "httpRequests": [
+      {
+        "model": "http_request",
+        "id": "rq_8zcPmufc6w",
+        "createdAt": "2025-04-18T18:02:39.154936655",
+        "updatedAt": "2025-04-18T19:12:51.041920585",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "folderId": "fl_gRPXdmY8yy",
+        "authentication": {
+          "token": "${[ token ]}"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": "{\"title\": \"Series 1\",\n  \"description\": \"Series 1 Description\"\n}"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": "s3G2vYeQ8S"
+          }
+        ],
+        "method": "POST",
+        "name": "createASeries",
+        "sortPriority": 0.002,
+        "url": "http://${[ url ]}/api/series",
+        "urlParameters": []
+      },
+      {
+        "model": "http_request",
+        "id": "rq_Kww5zYjUhB",
+        "createdAt": "2025-04-18T17:53:40.126376092",
+        "updatedAt": "2025-04-18T19:58:05.304401176",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "folderId": "fl_gRPXdmY8yy",
+        "authentication": {
+          "token": "${[ token ]}"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": "{\n  \"member\":\"thomas.hanover@gmail.com\"\n}"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": "j8iKemXFCs"
+          }
+        ],
+        "method": "GET",
+        "name": "getAllSeries",
+        "sortPriority": 0.001,
+        "url": "http://${[ url ]}/api/series",
+        "urlParameters": []
+      },
+      {
+        "model": "http_request",
+        "id": "rq_fTFWaZw9gD",
+        "createdAt": "2025-04-18T16:46:20.201712419",
+        "updatedAt": "2025-04-18T19:08:52.172155391",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "folderId": "fl_gRPXdmY8yy",
+        "authentication": {
+          "token": "${[ token ]}"
+        },
+        "authenticationType": "bearer",
+        "body": {},
+        "bodyType": null,
+        "description": "",
+        "headers": [],
+        "method": "DELETE",
+        "name": "deleteInvite",
+        "sortPriority": 0.0009,
+        "url": "http://${[ url ]}/api/invites/6802a323991eb440af24e713",
+        "urlParameters": []
+      },
+      {
+        "model": "http_request",
+        "id": "rq_Vh7r68W8AF",
+        "createdAt": "2025-04-18T01:11:12.174257396",
+        "updatedAt": "2025-04-18T19:09:25.522384827",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "folderId": "fl_gRPXdmY8yy",
+        "authentication": {
+          "token": "${[ token ]}"
+        },
+        "authenticationType": "bearer",
+        "body": {
+          "text": "{\n  \"title\" : \"Title 1\",\n  \"date\" : \"1744504235238\",\n  \"description\": \"Just a test event\"\n}\n"
+        },
+        "bodyType": "application/json",
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "Content-Type",
+            "value": "application/json",
+            "id": "HIcnzDGI7V"
+          },
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": "m80vM3rchC"
+          }
+        ],
+        "method": "POST",
+        "name": "createInvite",
+        "sortPriority": 0.001,
+        "url": "http://${[ url ]}/api/invites",
+        "urlParameters": []
+      },
+      {
+        "model": "http_request",
+        "id": "rq_2SYn7FhHkv",
+        "createdAt": "2025-04-18T00:51:05.170630747",
+        "updatedAt": "2025-04-18T19:09:11.947145971",
+        "workspaceId": "wk_uD8kTVtvkX",
+        "folderId": "fl_gRPXdmY8yy",
+        "authentication": {
+          "token": "${[ token ]}"
+        },
+        "authenticationType": "bearer",
+        "body": {},
+        "bodyType": null,
+        "description": "",
+        "headers": [
+          {
+            "enabled": true,
+            "name": "",
+            "value": "",
+            "id": "NAHM4YIcim"
+          }
+        ],
+        "method": "GET",
+        "name": "getAllInvites",
+        "sortPriority": 0.0,
+        "url": "http://${[ url ]}/api/invites",
+        "urlParameters": []
+      }
+    ],
+    "grpcRequests": [],
+    "websocketRequests": []
+  }
+}

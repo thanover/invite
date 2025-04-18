@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout"; // Import the Layout component
 import { LoginPage } from "./pages/Login";
-import EventListPage from "./pages/EventList";
-import EventDetailPage from "./pages/EventDetailsPage";
 import { Dashboard } from "./pages/Dashboard";
 
 function App() {
@@ -18,8 +16,6 @@ function App() {
           {/* Use 'index' for the component that matches the parent path exactly */}
           <Route index element={<Dashboard />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="event" element={<EventListPage />} />
-          <Route path="event/:id" element={<EventDetailPage />} />
 
           {/* Optional: Add a 404 Not Found route within the layout */}
           <Route

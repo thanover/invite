@@ -1,7 +1,6 @@
 import { PropsWithChildren } from "react";
 
 export type ButtonProps = {
-  to: string;
   type: ButtonType;
 };
 
