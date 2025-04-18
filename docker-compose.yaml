@@ -30,19 +30,7 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-  # tunnel:
-  #   container_name: cloudflared-tunnel
-  #   image: cloudflare/cloudflared
-  #   restart: unless-stopped
-  #   command: tunnel run
-  #   environment:
-  #     - TUNNEL_TOKEN=${CLOUDFLARE_TOKEN}
-  #   networks:
-  #     - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  mongodb-data: # Optional: Remove if mongodb service is removed
