@@ -32,6 +32,7 @@ export interface Series {
   description: string;
   owner: string; // Clerk User ID
   members: string[];
+  invites: Invite[]; // List of invites associated with the series
 }
 
 export interface SeriesInput {

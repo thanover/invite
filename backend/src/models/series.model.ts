@@ -10,7 +10,8 @@ const SeriesSchema: Schema = new Schema(
       trim: true,
     },
     owner: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId, // Changed type to ObjectId
+      ref: "User", // Reference the 'User' model
       required: [true, "Series owner is required"],
     },
     description: {
@@ -18,11 +19,21 @@ const SeriesSchema: Schema = new Schema(
       required: false, // Assuming description is optional
       trim: true,
     },
-    members: {
-      type: [String], // Array of strings (email addresses)
-      required: false,
-      default: [], // Default to an empty array
-    },
+    members: [
+      {
+        // Changed to array of ObjectIds
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User", // Reference the 'User' model
+        required: false,
+      },
+    ], // Default is implicitly an empty array
+    invites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Invite", // Reference the 'Invite' model
+        required: false,
+      },
+    ],
   },
   {
     timestamps: true, // Automatically add createdAt and updatedAt fields

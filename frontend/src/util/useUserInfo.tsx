@@ -11,5 +11,6 @@ export function useUserInfo() {
     setIsAdmin(user.publicMetadata.role === "admin");
     setUserId(user.id);
   }, [user]);
+
   return { isAdmin, userId };
 }

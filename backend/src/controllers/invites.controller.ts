@@ -52,10 +52,10 @@ export const createInvite = async (
   try {
     // Basic validation example (consider using a validation library like Joi or Zod)
     const { title, date, description, seriesId } = req.body; // Include seriesId
-    if (!title || !date) {
-      res
-        .status(400)
-        .json({ message: "Missing required fields: title and date" });
+    if (!title || !date || !seriesId) {
+      res.status(400).json({
+        message: "Missing required fields: title, date and/or seriesId",
+      });
       return;
     }
 
@@ -79,6 +79,11 @@ export const createInvite = async (
     const savedInvite: IInvite = await newInvite.save();
     // Optionally populate series details in the response
     await savedInvite.populate("seriesId");
+    if (savedInvite.seriesId) {
+      await Series.findByIdAndUpdate(savedInvite.seriesId, {
+        $push: { invites: savedInvite._id },
+      });
+    }
     res.status(201).json(savedInvite);
   } catch (error) {
     // Handle potential validation errors from Mongoose

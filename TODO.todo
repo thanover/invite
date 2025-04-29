@@ -1,4 +1,5 @@
-☐ UI that a user can sign in
-☐ User is added to the database
-☐ API can accept a user and return invites they belong to
-☐ User can create an invite and user can see it
+✔ UI that a user can sign in @done(25-04-26 20:46)
+✔ User is added to the database @done(25-04-26 20:46)
+✔ API can accept a user and return invites they belong to @done(25-04-26 20:46)
+✔ User can create an invite and user can see it @done(25-04-26 20:46)
+☐ User can create a invite in a series
