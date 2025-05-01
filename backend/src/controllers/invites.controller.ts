@@ -52,6 +52,12 @@ export const createInvite = async (
   try {
     // Basic validation example (consider using a validation library like Joi or Zod)
     const { title, date, description, seriesId } = req.body; // Include seriesId
+    console.log("Creating new invite");
+    console.log("Request body:", req.body);
+    console.log("Series ID:", seriesId);
+    console.log("Title:", title);
+    console.log("Date:", date);
+    console.log("Description:", description);
     if (!title || !date || !seriesId) {
       res.status(400).json({
         message: "Missing required fields: title, date and/or seriesId",

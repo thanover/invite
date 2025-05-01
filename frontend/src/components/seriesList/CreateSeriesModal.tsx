@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
-import apiClient from "../../api/api"; // Adjust path as needed
-import { useAuth } from "@clerk/clerk-react"; // Import useAuth to get token
+import React, { useState, useEffect, useMemo } from "react"; // Added useMemo
+import ApiClient from "../../api/api"; // Import the class
+import { useAuth } from "@clerk/clerk-react";
 
 interface CreateSeriesModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSeriesCreated: () => void; // Callback to refresh the list or perform other actions
+  onSeriesCreated: () => void;
 }
 
-// Basic interface for the data needed to create a series
 interface NewSeriesData {
   title: string;
   description?: string;
@@ -25,6 +24,20 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
   const [error, setError] = useState<string | null>(null);
   const { getToken } = useAuth(); // Get the getToken function from Clerk
 
+  // Memoize the apiClient instance
+  const apiClient = useMemo(() => {
+    if (!getToken) {
+      // Handle case where getToken might not be immediately available
+      // Although useAuth should generally provide it synchronously once authenticated
+      console.warn("Clerk getToken function not yet available.");
+      // Return a dummy or null object, or handle appropriately
+      // For simplicity, we'll rely on getToken being available when needed
+      // A more robust solution might involve disabling the form until getToken is ready
+      return null;
+    }
+    return new ApiClient(getToken);
+  }, [getToken]); // Recreate only if getToken changes
+
   const resetForm = () => {
     setTitle("");
     setDescription("");
@@ -32,7 +45,6 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
     setIsSaving(false);
   };
 
-  // Reset form when modal is opened/closed externally
   useEffect(() => {
     if (!isOpen) {
       resetForm();
@@ -40,12 +52,17 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
   }, [isOpen]);
 
   const handleClose = () => {
-    // Don't reset form here, useEffect handles it based on isOpen prop
     onClose();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!apiClient) {
+      setError("API client is not initialized. Cannot save.");
+      return;
+    }
+
     setIsSaving(true);
     setError(null);
 
@@ -55,30 +72,23 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
       return;
     }
 
-    const token = await getToken(); // Get the auth token
-    if (!token) {
-      setError("Authentication token not found. Please log in.");
-      setIsSaving(false);
-      return;
-    }
-
     const newSeriesData: NewSeriesData = {
       title: title.trim(),
-      description: description.trim() || undefined, // Send undefined if empty
+      description: description.trim() || undefined,
     };
 
     try {
-      // Call the API client's post method
-      await apiClient.post("series", token, newSeriesData);
-      onSeriesCreated(); // Notify parent component
-      handleClose(); // Close modal on success
+      // Call the API client's post method - no token needed as argument
+      await apiClient.post("series", newSeriesData);
+      onSeriesCreated();
+      handleClose();
     } catch (err) {
       console.error("Failed to create series:", err);
       setError(
         err instanceof Error ? err.message : "An unknown error occurred."
       );
     } finally {
-      setIsSaving(false); // Ensure saving state is reset
+      setIsSaving(false);
     }
   };
 
@@ -86,7 +96,6 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
     return null;
   }
 
-  // Basic Modal Styling (replace with your preferred modal library or CSS)
   const modalStyle: React.CSSProperties = {
     position: "fixed",
     top: "50%",
@@ -169,6 +178,7 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
               required
               style={inputStyle}
               placeholder="Enter series title"
+              disabled={!apiClient} // Optionally disable if client not ready
             />
           </div>
           <div style={{ marginBottom: "1.5rem" }}>
@@ -182,6 +192,7 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
               rows={4}
               style={inputStyle}
               placeholder="Enter a short description"
+              disabled={!apiClient} // Optionally disable if client not ready
             />
           </div>
           {error && (
@@ -206,12 +217,16 @@ const CreateSeriesModal: React.FC<CreateSeriesModalProps> = ({
             <button
               type="button"
               onClick={handleClose}
-              disabled={isSaving}
+              disabled={isSaving || !apiClient}
               style={cancelButtonSyle}
             >
               Cancel
             </button>
-            <button type="submit" disabled={isSaving} style={buttonStyle}>
+            <button
+              type="submit"
+              disabled={isSaving || !apiClient}
+              style={buttonStyle}
+            >
               {isSaving ? "Saving..." : "Create Series"}
             </button>
           </div>
